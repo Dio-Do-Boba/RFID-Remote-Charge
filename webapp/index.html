@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>RFID2 设备面板</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <!--
+      This page acts like a simple single-page application.
+      All data fetching and mutations are handled inside app.js.
+    -->
+    <main class="page">
+      <header class="page__header">
+        <h1>RFID2 Device Monitor</h1>
+        <button id="manual-refresh" class="button button--secondary">
+          Refresh Now
+        </button>
+      </header>
+
+      <section class="card">
+        <h2 class="card__title">Device Status</h2>
+
+        <div class="status-grid" id="status-grid">
+          <!--
+            Content injected dynamically:
+              - Card1, Card2, Card3
+          -->
+        </div>
+
+        <p class="hint">
+          Last update: <span id="last-updated">--</span>. The dashboard refreshes
+          every <span id="poll-interval">--</span> seconds; use the button above
+          to refresh immediately.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title">Update Properties</h2>
+        <form id="device-form" class="device-form">
+          <div class="form-row">
+            <label for="c1Charge">C1 Charge</label>
+            <input
+              type="number"
+              id="c1Charge"
+              name="c1Charge"
+              placeholder="Enter C1Charge (0-999)"
+              min="0"
+              max="999"
+              step="1"
+            />
+          </div>
+
+          <div class="form-row">
+            <label for="c2Charge">C2 Charge</label>
+            <input
+              type="number"
+              id="c2Charge"
+              name="c2Charge"
+              placeholder="Enter C2Charge (0-999)"
+              min="0"
+              max="999"
+              step="1"
+            />
+          </div>
+
+          <div class="form-row">
+            <label for="c3Charge">C3 Charge</label>
+            <input
+              type="number"
+              id="c3Charge"
+              name="c3Charge"
+              placeholder="Enter C3Charge (0-999)"
+              min="0"
+              max="999"
+              step="1"
+            />
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="button button--primary">
+              Submit Changes
+            </button>
+            <span class="form-status" id="form-status">Waiting for action…</span>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title">Balance Tracking (Debug)</h2>
+        <div id="balance-tracking" class="balance-tracking">
+          <div class="balance-item">
+            <strong>Card1:</strong> 
+            <span id="track-c1">--</span> 
+            <small>(Previous: <span id="prev-c1">--</span>)</small>
+          </div>
+          <div class="balance-item">
+            <strong>Card2:</strong> 
+            <span id="track-c2">--</span> 
+            <small>(Previous: <span id="prev-c2">--</span>)</small>
+          </div>
+          <div class="balance-item">
+            <strong>Card3:</strong> 
+            <span id="track-c3">--</span> 
+            <small>(Previous: <span id="prev-c3">--</span>)</small>
+          </div>
+        </div>
+        <p class="hint" style="margin-top: 1rem;">
+          <strong>如何查看检测过程：</strong><br>
+          1. 打开浏览器控制台 (F12) 查看详细日志<br>
+          2. 查看下方活动日志中的余额变化记录<br>
+          3. 首次检测到余额时会显示"首次检测到余额"，下次变化时会触发车辆调用
+        </p>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title">Activity Log</h2>
+        <ul id="log-list" class="log-list">
+          <!-- log entries are appended via JavaScript -->
+        </ul>
+      </section>
+    </main>
+
+    <!--
+      app.js orchestrates the UI behavior; api.js encapsulates the OneNET calls.
+      vehicleApi.js handles vehicle IoT system integration.
+      In production, please proxy these requests to protect credentials.
+    -->
+    <script src="./api.js"></script>
+    <script src="./vehicleApi.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
+
